@@ -1,21 +1,130 @@
 {
   "name": "endstone",
   "displayName": "Endstone-Dev-Aids",
+  "icon": "images/logo.png",
   "description": "A vscode extension makes the Endstone plugin developing easier",
   "version": "0.0.1",
+  "publisher": "Huang FTS427",
+  "keywords": ["endstone", "BDS", "es", "python"],
   "engines": {
-    "vscode": "^1.93.0"
+    "vscode": "^1.10.5"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:*.py",
+    "onStartupFinished",
+    "onDebug"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "endstone.helloWorld",
-        "title": "Hello World"
+        "command": "extension.esda.config",
+        "title": "Endstone Dev Aids Config"
+      },
+      {
+        "command": "extension.esda.docs",
+        "title": "Endstone Docs",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "extension.esda.runconsole",
+        "title": "Run Endstone",
+        "category": "endstone",
+        "enablement": "!inDebugMode",
+        "icon": "./images/logo.png"
+      },
+      {
+        "command": "extension.esda.stopconsole",
+        "title": "Stop Endstone",
+        "enablement": "!inDebugMode",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "extension.esda.load",
+        "title": "load this plugin to Endstone",
+        "icon": "$(arrow-up)"
+      },
+      {
+        "command": "extension.esda.unload",
+        "title": "unload this plugin to Endstone",
+        "icon": "$(arrow-down)"
+      },
+      {
+        "command": "extension.esda.reload",
+        "title": "reload this plugin to Endstone",
+        "icon": "$(sync)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+					"when": "resourceLangId == python",
+					"command": "extension.esda.docs",
+					"group": "navigation@6"
+				},
+				{
+					"when": "resourceLangId == python && !esda:termianl",
+					"command": "extension.esda.runconsole",
+					"group": "navigation@1"
+				},
+				{
+					"when": "resourceLangId == python && esda:termianl",
+					"command": "extension.esda.unload",
+					"group": "navigation@3"
+				},
+				{
+					"when": "resourceLangId == python && esda:termianl",
+					"command": "extension.esda.load",
+					"group": "navigation@2"
+				},
+				{
+					"when": "resourceLangId == python && esda:termianl",
+					"command": "extension.esda.reload",
+					"group": "navigation@4"
+				},
+				{
+					"when": "resourceLangId == python && esda:termianl",
+					"command": "extension.esda.stopconsole",
+					"group": "navigation@1"
+				}
+      ]
+    },
+    "configuration":[
+      {
+        "title": "Endstone Dev Helper",
+        "properties": {
+          "extension.esda.reloadCommand": {
+            "type": "string",
+            "default": "reload",
+            "description": "调试器重载命令",
+            "scope": "resource",
+            "order": 0
+          },
+          "extension.esda.bdsPath": {
+            "type": "string",
+            "default": "null",
+            "description": "BDS 根目录",
+            "scope": "resource",
+            "order": 1
+          },
+          "extension.esda.autoSplitDocs": {
+            "type": "boolean",
+            "default": true,
+            "description": "打开文档时自动向右分割视图",
+            "scope": "resource",
+            "order": 2
+          },
+          "extension.esda.useVenv": {
+            "type":"boolean",
+            "default": true,
+            "description": "自动生成 venv 环境",
+            "scope": "resource",
+            "order": 3
+          }
+        }
       }
     ]
   },
